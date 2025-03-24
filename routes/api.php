@@ -47,7 +47,7 @@ Route::middleware(['auth:api'])->prefix('/v1/users')->name('users')
 });
 
 
-Route::middleware(['auth:api'])->prefix('/v1/book')->name('books')
+Route::middleware(['auth:api'])->prefix('/v1/books')->name('books')
     ->controller(BookController::class)
     ->group(function () {
         Route::get('/', 'index')->name('book.list');
