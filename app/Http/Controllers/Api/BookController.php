@@ -13,6 +13,8 @@ use App\Repositories\Rating\RatingRepo;
 
 use App\Repositories\Review\Review;
 use App\Repositories\Review\ReviewRepo;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\BookResource;
 
 class BookController extends Controller
 {
@@ -34,7 +36,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $data = ['books' => Book::all()];
+        $data = ['books' => BookResource::collection(Book::all())];
         return $this->success($data , 'Successfully aget dmins List', 200); 
     }
 
@@ -55,6 +57,20 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * This is function return reviews for book by id
+     */
+    public function getBookReviews(Request $request , $book_id)
+    {
+        try {
+            $book = Book::where('id',$book_id)->with('review')->get();
+            $data = [ "reviews" => $book->review()->get()];
+            return $this->success($data, "get book reviews list successfully", 200);
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            return $this->error($message , 400) ;
+        }
+    }
 
     /**
      * This is function add rating for book
@@ -84,11 +100,15 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
         try {
             $book = Book::find($id);
-            $data = ['book' => $book];
+            
+            $data = ['book' => BookResource::make($book)];
+            $user = Auth::user('api');
+            $user->userhistory()->detach($book);
+            $user->userhistory()->attach($book ); 
             return $this->success($data, "Book get successfully", 200);
         } catch (\Exception $e) {
             $message = $e->getMessage();

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use App\Repositories\Review\Review;
 use App\Repositories\Rating\Rating;
 use App\Repositories\User\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends AbstractModel 
 {
@@ -54,8 +55,14 @@ class Book extends AbstractModel
         return $this->hasMany(Rating::class);
     }
 
-    public function history()
+
+    public function avgRating()
     {
-        return $this->belongsToMany(User::class, 'user_histories' , 'book_id' , 'user_id' );
+        return $this->rating->avg('rating_value');
+    }
+
+    public function history(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'users_books' , 'book_id' , 'user_id' );
     }
 }

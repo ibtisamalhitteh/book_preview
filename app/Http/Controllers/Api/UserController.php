@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Repositories\User\User;
 use App\Repositories\User\UserRepo;
 use App\Traits\ApiResponser;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -35,9 +36,9 @@ class UserController extends Controller
     public function getHistory(Request $request)
     {
         try {
-            $user = $request->user('api');
+            $user = Auth::user('api');
 
-            $data = [ "history" => $user->history()];
+            $data = [ "userhistory" => $user->userhistory()->get()];
             return $this->success($data, "get user history successfully", 200);
         } catch (\Exception $e) {
             $message = $e->getMessage();

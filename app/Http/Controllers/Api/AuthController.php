@@ -12,6 +12,7 @@ use App\Repositories\User\UserRepo;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\registerRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -70,7 +71,14 @@ class AuthController extends Controller
     
     public function profile(Request $request)
     {
-        $data = ["user" => $request->user('api')];
+        $user = Auth::user('api')->first(); 
+        $result = [
+            'id' => $user->id,
+            'name' =>$user->name,
+            'email'=>$user->email,
+            'userhistory'=> $user->userhistory()->get()
+        ];
+        $data = ["user" => $result];
         return $this->success($data, "Get user successfully", 200);
     }
 

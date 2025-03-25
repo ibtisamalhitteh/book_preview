@@ -22,7 +22,7 @@ Route::prefix('/v1')->name('auth.user')
 
 });
 
-Route::middleware(['auth:api'])->prefix('/v1')->name('auth.user')
+Route::middleware(['auth:api'])->prefix('/v1')->name('user')
     ->controller(AuthController::class)
     ->group(function () {
         Route::post('/logout', 'logout')->name('logout');
@@ -55,6 +55,8 @@ Route::middleware(['auth:api'])->prefix('/v1/books')->name('books')
         Route::post('/rating', 'rating')->name('book.rating');
         Route::get('/view/{id}', 'show')->name('book.view');
         Route::get('/delete/{id}', 'destroy')->name('book.destroy');
+        Route::get('/get-book-reviews/{book_id}', 'getBookReviews')->name('book.reviewslist');
+
 });
     
 

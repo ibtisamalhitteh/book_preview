@@ -9,7 +9,7 @@ use App\Repositories\Book\Book;
 
 class Rating extends AbstractModel 
 {
-    use HasFactory , SoftDeletes ;
+    use  SoftDeletes ;
  
     public $softDeleting = true;
     protected $table = 'rating';

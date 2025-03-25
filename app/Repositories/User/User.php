@@ -20,6 +20,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use App\Repositories\Review\Review;
 use App\Repositories\Rating\Rating;
 use App\Repositories\Book\Book;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends AbstractModel implements
     AuthenticatableContract,
@@ -60,9 +61,9 @@ class User extends AbstractModel implements
         return $this->hasMany(Rating::class);
     }
     
-    public function history()
+    public function userhistory(): BelongsToMany
     {
-        return $this->belongsToMany(Book::class, 'user_histories' , 'user_id' , 'book_id' );
+        return $this->belongsToMany(Book::class, 'users_books' , 'user_id' , 'book_id' );
     }
 /*
     protected function password(): Attribute
