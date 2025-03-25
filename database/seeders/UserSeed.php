@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeed extends Seeder
@@ -21,6 +22,13 @@ class UserSeed extends Seeder
         $user->name = 'ibtisam';
         $user->email = 'ibtisam@bookspreview.com';
         $user->save();
+
+
+        DB::table('admin_users')->insert([
+            'username' => 'admin',
+            'name' => 'Administrator',
+            'password' => bcrypt('admin'),
+        ]);
 
     }
 }
